@@ -52,7 +52,7 @@ type var [] = {xx,x,x,x};
 
 ## 指针
 
-指向函数的指针：
+* 指向函数的指针：
 
 ```c
 int (*fc)(int, int);
@@ -68,6 +68,10 @@ int main(){
 ```
 
 **NOTE:** fb, *fb, &fb 都指向fb函数的地址。
+
+* 多级指针
+
+  
 
 ## 字符串
 
@@ -146,4 +150,42 @@ perror("str")：会打印"str: <error information>"
 
 strerror(id)：打印相应id的字符串模式。
 
+## 可变参数
+
+* ```c
+  int main(int argc, char* argv[]) // argc是指输入参数个数，argv是字符串指针，在程序开始时，入口为main，例如a.exe aaaa bbb cccc，此时argc=4，argv={"aaaa", "bbb", "cccc"}，以空格隔开。没提供参数，argc = 1，argv[0]为程序名称，第一个参数为argv[1]
+  ```
+
+* ```c
+  #include <stdio.h>
+  #include <stdarg.h>
+  
+  void check(char y, int i, ...) {
+  	va_list var;
+  	int x;
+  	va_start(var, i);
+  	for (x = 0; x < i; x++) {
+  		printf("%d\n", va_arg(var, int));
+  	}
+  	printf("x:%c\n", y);
+  }
+  
+  int main() {
+  
+  	check('y', 3, 1, 4, 2);
+  	return 0;
+  }
+  ```
+
+  **NOTE:**"..." 后面不能再加参数。
+
+## 动态内存分配
+
+```c
+void *calloc(int num, int size): 分配num*size个字节的连续空间并初始化，给返回的指针。
+void *malloc(int size): 分配size个字节的空间给指针。
+void *realloc(void* ptr, int size): 为ptr重新分配size个字节的空间，并返回原指针。
+//上述代码在返回指针后，编译器会记录指针地址对应的代码块长度，以便之后操作。
+free(void* ptr)：释放指针指向的内存块。
+```
 

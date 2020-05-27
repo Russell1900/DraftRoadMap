@@ -69,19 +69,18 @@ NAME = 18
 
 ### 数据类型
 
-数据类型决定了变量的值在内存中存储和读取的方式，如占多少byte。以及在程序编写和运行中可以使用的function
+* 数据类型决定了变量的值在内存中存储和读取的方式，如占多少byte。以及在程序编写和运行中可以使用的function
 
-int，str，bool，float
+  int，str，bool，float
 
-32位：int占32bit，-2^31^ -- 2^31^-1
+  32位：int占32bit，-2^31^ -- 2^31^-1
 
-64位：int占64bit
+  64位：int占64bit
 
-**Note：** 
+  **Note：** 
 
-* 负数：若数据类型中可能出现负数，在读取时，若第一个bit位1，则取补码（反码+1）。如储存一个负数，则储存绝对值的补码。
-
-* 字符串赋值："  ",' '用于单行赋值，'''   ''' 用于多行复制，如：
+  * 负数：若数据类型中可能出现负数，在读取时，若第一个bit位1，则取补码（反码+1）。如储存一个负数，则储存绝对值的补码。
+  * 字符串赋值："  ",' '用于单行赋值，'''   ''' 用于多行复制，如：
 
   ```python
   a = '''shjsh
@@ -91,9 +90,41 @@ int，str，bool，float
 
   str + str 为字符串的拼接；str*int：将str重复int次。
 
-* 使用type(变量)或isinstance(变量)输出变量类型。type不判断继承，及子类不是父类。isinstance判断继承，子类是父类。
+  * 使用type(变量)或isinstance(变量)输出变量类型。type不判断继承，及子类不是父类。isinstance判断继承，子类是父类。
+  * 1byte=8bit
 
-* 1byte=8bit
+* 字符串 string：
+
+  * 选取char和切片
+
+    ```python
+    s = 'abcdefgh'
+    s[0], s[1:4], s[2:-1], s[:2], s[2:]
+    s[2:-1:2] 第三位为取值步长，默认是1
+    s[-1:1:-1] 反向切片，步长必须为负值
+    ```
+
+    **Note：**在所有类的切片操作中，都是左闭右开的形式，要去到最左或最右的元素，可以将该位置省略。
+
+  * string.upper(), string.lower(), string.strip() 若不输入任何参数，则去除两端的**空白字符**（包括换行等），若有输入，怎去除两端的所有在输入之内的字符。string.split(a) 使用a对字符串进行分割，返回list，若最左或最右是分隔符，则出现''。string.join(string/list)：将输入的list中每个元素以string连接起来。string.count(a),计算a在string中出现的次数。string.replace(old, new, max)：若不写max则全部替换。
+
+  * 字符串也是list。
+
+### 容器
+
+#### list
+
+* 创建：l1=[xx,xxc], l1 = list(l2) 将l2转化为list并赋给l1.
+* 插入：l1.insert(i,x), l1.append(x), l1.extend(x) x需要为list，将x展开append到l1后。
+* 删除：list.pop(i)：删除第i元素，并返回值，默认删除最后一个。del list(:::):删除第i个元素,可以按切片删除。list.remove(x)：删除值为x的元素,只移除第一个.
+* 修改: list[i:j:] = x, x必须为list, 步长为1时x长度无限制,会将当前切片整体替换为x,不为1时,x长度要和切片配合.使用list[i:i] = x,可以在i位置插入x (list),  使用list[i:j] = [],可以删除i到j.
+* reverse,sort,sorted,切片.
+
+#### turple
+
+* 元组无法修改,只能查看,但是元组中的list的元素是可以修改的, 是因为每个list其实是一个指针,指针在元组中时,可以修改指针指向的内容,但不可修改指针.
+* 一般元组多用于返回值时多个要进行拆包时,不用list.
+
 
 ### 流程控制语句
 
@@ -126,7 +157,14 @@ int，str，bool，float
 
 * continue：终端当前循环，进入下一判断+循环
 
-* 
+* for：
+
+  ```python
+  for a in set:
+      xxxx
+  ```
+
+  
 
 ### 格式化输出
 
@@ -224,6 +262,12 @@ print(msg)
 
 ## Pycharm常用快捷键
 
+* ctrl+左键：跳到定义
 * ctrl+d：复制当前行
 * ctrl+？：注释选中部分
 
+# #常用函数
+
+len()：返回string和list的长度。
+
+range(): 产生数字迭代器.
