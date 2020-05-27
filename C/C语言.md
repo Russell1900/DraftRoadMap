@@ -50,6 +50,14 @@ type var [size] = {x,x,x,x,x};
 
 type var [] = {xx,x,x,x};
 
+二维数组和多维数组作为形参时，除第一维度外，其他维度都要指明数字。
+
+void a(int b[]);
+
+void a(int b\[\]\[10\]);
+
+void a(int b\[\]\[\]); **不合法**
+
 ## 指针
 
 * 指向函数的指针：
@@ -189,3 +197,23 @@ void *realloc(void* ptr, int size): 为ptr重新分配size个字节的空间，�
 free(void* ptr)：释放指针指向的内存块。
 ```
 
+## 浮点类型
+
+***value of floating-point*** **= \*significand\* x \*base\* ^ exponent , with sign --- F.1**
+译为中文表达即为：
+**（浮点）数值 =   尾数  ×  底数 ^ 指数，（附加正负号）---------------- F.2** 
+
+```c
+float:
+	bit31(1):正负
+    bit30-23(8):指数, 第一位为指数的正负
+    bit22-0(23):有效位
+    有效位均为0.xxxxx,也就是说有效位储存的数值拿出来以后都要加上“0.”，永远小于1.底数是2.
+    float取值范围-2^128--2^128.有效位为2^23(8388608),也就是说最大7位，6位保底。
+double：
+    指数位为11位
+```
+
+## 整形
+
+int和long都是4byte，long long 是8byte
