@@ -1,5 +1,7 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 typedef unsigned int uint;
 int count;
@@ -324,6 +326,137 @@ void ex28(){
     printf("\ntotal digit: %d\n", count);
 }
 
+/* pointer */
+
+void C_Ex1(){
+    int a[3], i, j, *p, tmp;
+    p = a;
+    printf("type in 3 nums:\n");
+    for(i=0;i<3;i++){
+        scanf("%d", p+i);
+    }
+    for (i=0;i<3;i++){
+        for(j=i+1;j<3;j++){
+            if(*(p+j)>*(p+i)){
+                tmp = *(p+i);
+                *(p+i) = *(p+j);
+                *(p+j) = tmp;
+            }
+        }
+    }
+
+    for(i=0;i<3;i++){
+        printf("%d\n", a[i]);
+    }
+}
+
+void C_Ex2(){
+    int i, j;
+
+    char c[3][10];
+    char *p[3], *tmp;
+
+    printf("type in 3 string:\n");
+    for(i=0;i<3;i++){
+        p[i] = c[i];
+        scanf("%s", p[i]);
+        printf("%d\n", strlen(p[i]));
+    }
+    for (i=0;i<3;i++){
+        for(j=i+1;j<3;j++){
+            if(strlen(p[j])>strlen(p[i])){
+                tmp = p[i];
+                p[i] = p[j];
+                p[j] = tmp;
+            }
+        }
+    }
+
+    for(i=0;i<3;i++){
+        printf("%s\n", p[i]);
+    }
+    
+}
+
+void C_Ex3(){
+    int i, m, n;
+    int *p, *q, *o;
+
+    printf("type in n:\n");
+    scanf("%d", &n);
+    printf("type in m:\n");
+    scanf("%d", &m);
+    p = (int*)malloc(4*n);
+    o = (int*)malloc(4*m);
+    q = p;
+    for(i=0;i<n;i++){
+        *(p+i) = i;
+    }
+    memcpy((void*)o, (void*)p, 4*m);
+    memcpy((void*)p, (void*)(p+m), 4*(n-m));
+    memcpy((void*)(p+n-m), (void*)o, 4*m);
+    for(i=0;i<n;i++){
+        printf("%d\n",*(p+i));
+    }
+    free(p);
+    free(o);
+}
+
+void C_Ex4(){
+    int len = 10, i, tmp;
+    int a[10] = {1,65,23,554,31,3,7,586,123,75};
+    int *p, *q;
+    p = a;
+    q = a;
+    for(i=1;i<len;i++){
+        if(a[i]>*p){
+            p = &a[i];
+        }
+        if(a[i]<*q){
+            q = &a[i];
+        }
+    }
+
+    tmp = a[0];
+    a[0] = *q;
+    *q = tmp;
+    tmp = a[len-1];
+    a[len-1] = *p;
+    *p = tmp;
+    for(i=0;i<len;i++){
+        printf("%d\n", a[i]);
+    }
+}
+
+void C_Ex5(){
+    int i = 0, n, k = 3, count = 0, f, t;
+    int *p;
+    printf("Type in total num:\n");
+    scanf("%d", &n);
+    p = (int*)malloc(4*n);
+    memset((void*)p, 0, 4*n);
+    for(i=0;i<n;i++){
+        *(p+i) = i;
+    }
+    t = n;
+    while(t!=1){
+        if(*(p+i%n) != 0){
+            count++;
+            if(count%k == 0){
+                *(p+i%n) = 0;
+                t--;
+            }
+        }
+        i++;
+    }
+    f = (i-1)%n;
+    printf("last element is %d\n", f);
+}
+
+void C_Ex6(){
+    printf("%d", 1+3%2);
+}
+
 int main(){
     //ex3();
     //ex4();
@@ -341,6 +474,13 @@ int main(){
     //ex25();
     //ex26();
     //ex27();
-    ex28();
+    //ex28();
+    //C_Ex1();
+    //C_Ex2();
+    //C_Ex3();
+    //C_Ex4();
+    //C_Ex5();
+    C_Ex6();
+
     return 0;
 }
