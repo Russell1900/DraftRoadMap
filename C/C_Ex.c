@@ -4,6 +4,11 @@
 #include <string.h>
 
 typedef unsigned int uint;
+typedef struct myst{
+    int val;
+    struct myst* Next;
+} myst;
+
 int count;
 // https://www.runoob.com/cprogramming/c-100-examples.html
 void ex3(){
@@ -428,6 +433,19 @@ void C_Ex4(){
     }
 }
 
+int Next(int i, int k){
+    return i%k;
+}
+
+int Prev(int i, int k){
+    if (i==0){
+        i = k-1;
+    }else{
+        i = i-1;
+    }
+    return i;
+}
+
 void C_Ex5(){
     int i = 0, n, k = 3, count = 0, f, t;
     int *p;
@@ -436,21 +454,59 @@ void C_Ex5(){
     p = (int*)malloc(4*n);
     memset((void*)p, 0, 4*n);
     for(i=0;i<n;i++){
-        *(p+i) = i;
+        *(p+i) = i+1;
     }
     t = n;
     while(t!=1){
-        if(*(p+i%n) != 0){
-            count++;
-            if(count%k == 0){
-                *(p+i%n) = 0;
+        if(*(p+i) != 0){
+            count=Next(count,k);
+            if(count == 0){
+                *(p+i) = 0;
                 t--;
             }
         }
-        i++;
+        i = Next(i, n);
+        t--;
     }
-    f = (i-1)%n;
+    f = Prev(i,n);
     printf("last element is %d\n", f);
+}
+
+
+
+void C_Ex5_2(){
+
+    int i, n, k=3, count=0;
+    myst *p, *q;
+    printf("Type in num:\n");
+    scanf("%d", &n);
+
+    for(i=0;i<n;i++){
+        if(i==0){
+            p = (myst*)malloc(sizeof(myst));
+            q = p;
+            p->val = i+1;
+            p->Next = p;
+        }else{
+            q->Next = (myst*)malloc(sizeof(myst));
+            q = q->Next;
+            q->val = i+1;
+            q->Next = p;
+        }
+    }
+
+    while(p->Next!=p){
+        count++;
+        if((count%(k-1))==0){
+            q = p->Next;
+            p->Next = q->Next;
+            free(q);
+        }
+        p = p->Next;
+    }
+
+    printf("last item is %d\n", p->val);
+
 }
 
 void C_Ex6(){
@@ -480,7 +536,8 @@ int main(){
     //C_Ex3();
     //C_Ex4();
     //C_Ex5();
-    C_Ex6();
+    C_Ex5_2();
+    //C_Ex6();
 
     return 0;
 }

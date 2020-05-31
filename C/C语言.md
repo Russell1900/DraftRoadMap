@@ -58,15 +58,7 @@ void a(int b\[\]\[10\]);
 
 void a(int b\[\]\[\]); **不合法**
 
-
-
-```c
-int a[10]; // a指数组本身，sizeof(a)为数组整个大小，同时a指向a[0]，*a = a[0]。数值上(int)a = (int)&a[0]，a本身时int *型指针。
-int *p; // 指向int的指针，p=a，sizeof(a) 是指针大小
-int (*q)[10]; //q是指向10元素数组的指针，q=&a，*q=a，(*q)[0] = a[0], **q = a[0], sizeof(q) = 4;sizeof(*q) = 10;
-```
-
-
+**b 和 &b的int值相同**
 
 ## 指针
 
@@ -185,7 +177,9 @@ sC1 = {2, "N"};
 
   多维数组展开时按第一维升序展开。
 
-  
+  int a\[x0\]\[x1\]\[x2\]... : a+k = &(a[k]), \*(a+k)+i = &(a\[k\]\[i\]),...., *(a+k) = a[k] = &a\[k\]\[0\]=a+k
+
+
 
   
 
@@ -293,6 +287,47 @@ double：
 
 int和long都是4byte，long long 是8byte
 
-## 数组和指针传入函数作为形参
+## 文件 
 
-数组头和指针传入函数后，可以改变数组活指针指向的值，但不能改变数组头和指针本身。
+用户需要时就将数据从磁盘文件输入到内存中，编辑之后再保存回磁盘中。操作系统把各种设备同意按照磁盘文件来处理。读取文件均由操作系统来处理。C语言将文件看作成一个字符的序列。读写文件时，数据通过流（stream），在程序和磁盘间相互传输。
+
+**NOTE：**平时我们的变量时在对内存操作，像内存保存信息，对文件操作实际上是对计算击的外部储存设备（I/O）进行操作，需要通过通道（流）与IO相连。
+
+文件分为**二进制文件**和**文本文件**，文本文件（txt）保存时将数据从二进制转化问ASCII或utf-8等编码格式。二进制（bin）文件则直接将内存中的数据保存至文件。文本文件方式保存时，所占空间较大，转换时间较长。
+
+ANSI C中，提供文件缓冲区，在读取文件时，从相应的文件中将读取数据到缓冲区直到占满，写文件时，先从内存写道文件缓冲区，写满后再向磁盘储存。提高效率，节省时间。
+
+在打开文件时，先创建文件类型的结构体，再将文件内容读入缓冲区，在根据打开方式设置指针位置。关闭文件是释放缓冲区和结构体。
+
+### 读写操作
+
+console/keyboard：putchar()，getchar()，向console输出一个char，从键盘输入一个char。printf，scanf。puts，gets。
+
+文件：fputc('a', fp)，向fp的stream中写入一个byte('a')，ch=fgetc(fp)。feof(fp)，返回bool判断文件是否结束，EOF定义为-1，feof(in)等价于ch\==-1,ch\==EOF。
+
+fputs(str,fp)：向fp写入字符串str，成功返回0
+
+fgets(str, len, fp)：从fp读取len长的字符串存到str中，成功返回str地址，失败返回值NULL
+
+fscanf(fp，“ %d xxxx”，&i，xxx)：从fp中读取“%dxxx”样式的字符串，写入i xxx中。
+
+fprintf（fp，“%d xxx”，i）：向fp中输出。
+
+fread(buffer, size, count, fp): 从fp（二进制打开）中，读取size*count的字节数，储存到buffer中。
+
+fwrite(buffer, size, count, fp): 向fp（二进制打开）中，从buffer输入size*count的字计数。
+
+fclose(fp)
+
+rewind(fp): 将fp的位置标记返回至文件头。
+
+fseek(fp, len, start): 将位置标记从start除后移len字符（可以为负）。start = {SEEK_SET（起始）, SEEK_CUR（当前）, SEEK_END（终止）}
+
+ftell(fp)：返回fp文件位置标记的当前位置。出错时返回-1.
+
+ferror(fp)：在执行文件操作时，除了执行的语句会返回成功/报错的信息，fp也会储存当前语句的结果信息，ferror用于读取这个信息，0的时候表示无错误。
+
+clearerr(fp)：清楚文件当前错误.
+
+
+
