@@ -2,12 +2,18 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <time.h>
+#include <math.h>
 
 typedef unsigned int uint;
 typedef struct myst{
     int val;
     struct myst* Next;
 } myst;
+
+typedef enum bool{
+    false, true
+} bool;
 
 int count;
 // https://www.runoob.com/cprogramming/c-100-examples.html
@@ -510,8 +516,323 @@ void C_Ex5_2(){
 }
 
 void C_Ex6(){
-    printf("%d", 1+3%2);
+    char a[50], *p;
+    int i;
+    p = a;
+    printf("Type in string:\n");
+    scanf("%s", a);
+    i = 0;
+    while(*p!='\0'){
+        i++;
+        p++;
+    }
+    printf("String length is:%d\n", i);
 }
+
+void C_Ex7(){
+    char a[50], b[50], *p, *q;
+    int m, len, i;
+
+    p=a;
+    q=b;
+    printf("Type in string1:\n");
+    scanf("%s", a);
+    printf("Type in string2:\n");
+    scanf("%s", b);
+    printf("which position to start:\n");
+    scanf("%d", &m);
+
+    len = strlen(a);
+    if(m>len){
+        printf("m is larger than length of string1.\n");
+    }else{
+        p = a+m;
+        while(*q!='\0'){
+            //*(p++) = *(q++);
+            *p = *q;
+            p++;
+            q++;
+        }
+        *p='\0';
+    }
+    printf("New string is: %s", a);
+}
+
+void C_Ex8(){
+    char a;
+    int upper= 0, lower=0, space=0, other=0;
+
+    printf("type in\n");
+    do{
+        a= getchar();
+        if((a>='A')&&(a<='Z')){
+            upper++;
+        }else if((a>='a')&&(a<='z')){
+            lower++;
+        }else if(a==' '){
+            space++;
+        }else if(a!='\n'){
+            other++;
+        }
+    }while(a!='\n');
+    printf("upper case is %d\nlower case is %d\nspace is %d\nother is %d", upper,lower, space, other);
+
+}
+
+void transit(int a[][4], int xlen, int ylen){
+    int i, j;
+    int b[ylen][xlen];
+    for(i=0;i<xlen;i++){
+        for(j=0;j<ylen;j++){
+            printf("%3d  ", a[i][j]);
+            b[j][i] = a[i][j];
+        }
+        printf("\n");
+    }
+    printf("\n");
+    for(i=0;i<ylen;i++){
+        for(j=0;j<xlen;j++){
+            printf("%3d  ", b[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void C_Ex9(){
+    int a[][4] = {{1,2,3,4}, {5,6,7,8}, {9,10,11,12}};
+    transit(a, 3,4);
+
+}
+
+void C_Ex10(){
+    int xlen = 5, ylen =5;
+    int a[xlen][ylen];
+    int i, j, k, l, tmp, wasted=0;
+    int (*p)[5], *max, *min[4], *q[4];
+    
+    //srand((unsigned int) time(NULL));
+    // a = {{rand()%100, rand()%100, rand()%100, rand()%100, rand()%100},
+    // {rand()%100, rand()%100, rand()%100, rand()%100, rand()%100},
+    // {rand()%100, rand()%100, rand()%100, rand()%100, rand()%100},
+    // {rand()%100, rand()%100, rand()%100, rand()%100, rand()%100},
+    // {rand()%100, rand()%100, rand()%100, rand()%100, rand()%100}};
+    p = a;
+    max = *p;
+    for(i=0;i<4;i++){
+        min[i] = *p+i;
+    }
+    q[0] = *p;
+    q[1] = *p+4;
+    q[2] = *(p+4);    
+    q[3] = *(p+4)+4;
+
+    for(i=0;i<xlen;i++){
+        for(j=0;j<ylen;j++){
+            //a[i][j] = rand()%100;
+            a[i][j] = 10*i+j;
+            printf("%2d  ", a[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n%d %d %d %d %d\n", *max, *min[0], *min[1], *min[2], *min[3]);
+
+    for(i=0;i<xlen;i++){
+        for(j=0;j<ylen;j++){
+            if(*max<*(*(p+i)+j)){
+                max = *(p+i)+j;
+            }
+        }
+    }
+
+    tmp = a[2][2];
+    a[2][2] = *max;
+    *max = tmp;
+
+    printf("\n%d", *max);
+
+    for(k=0;k<4;k++){
+        for(i=0;i<xlen;i++){
+            for(j=0;j<ylen;j++){
+                wasted = 0;
+                for(l=0;l<4;l++){
+                    if(*(p+i)+j == q[l]){
+                        wasted = 1;
+                        break;
+                    }
+                }
+                if (wasted == 0){
+                    if(*min[k]>*(*(p+i)+j)){
+                        min[k] = *(p+i)+j;
+                    }
+                }
+            }
+        }
+        printf("  %d", *min[k]);
+        tmp = *q[k];
+        *q[k] = *min[k];
+        *min[k] = tmp;
+
+    }
+
+    printf("\n\n");
+    for(i=0;i<xlen;i++){
+        for(j=0;j<ylen;j++){
+            printf("%2d  ", a[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void C_Ex13(){
+    float start, end, i, steplen, sum;
+    start = 0;
+    end = 1;
+    steplen = 0.001;
+    
+    i = start;
+    sum = 0;
+    while(i<end){
+        sum+=sin(i)*steplen;
+        i+=steplen;
+    }
+    printf("res1 is %f\n", sum);
+
+    i = start;
+    sum = 0;
+    while(i<end){
+        sum+=cos(i)*steplen;
+        i+=steplen;
+    }
+    printf("res2 is %f\n", sum);
+
+    i = start;
+    sum = 0;
+    while(i<end){
+        sum+=exp(i)*steplen;
+        i+=steplen;
+    }
+    printf("res3 is %f\n", sum);
+}
+
+void tyin(){
+    char c;
+    c = getchar();
+    if(c!='\n'){
+        tyin();
+        printf("%c", c);
+    }
+    return;
+}
+
+void C_Ex14(){
+    printf("type in chars:\n");
+    tyin();
+}
+
+void C_Ex16(){
+    char str[50], *p;
+    int num[25];
+    int sum , last, total, i;
+    bool isNum = false;
+    printf("Type in strings:\n");
+    scanf("%s", str);
+    p = str;
+    total = 0;
+    sum = 0;
+    while(*p!='\0'){
+        switch(*p){
+            case '0':
+                last = 0;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '1':
+                last = 1;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '2':
+                last = 2;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '3':
+                last = 3;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '4':
+                last = 4;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '5':
+                last = 5;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '6':
+                last = 6;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '7':
+                last = 7;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '8':
+                last = 8;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            case '9':
+                last = 9;
+                sum = 10*sum+last;
+                isNum = true;
+                break;
+            default:
+                if(isNum == true){
+                    num[total] = sum;
+                    total++;
+                    sum = 0;
+                    isNum = false;
+                }
+                break;
+        }
+        p++;
+    }
+    if(isNum == true){
+        num[total] = sum;
+        total++;
+    }
+    printf("total num:%d\n", total);
+    for(i=0; i<total; i++){
+        printf("%d  ", num[i]);
+    }
+}
+
+int my_strcmp(char* str1, char* str2){
+    while(*str1!='\0'&&*str2!='\0'){
+        if(*str1==*str2){
+            str1++;
+            str2++;
+        }else{
+            return(str1-str2);
+        }
+    }
+    if(*str1=='\0'){
+        return *str2;
+    }else if(*str2=='\0'){
+        return *str1;
+    }else{
+        return 0;
+    }
+
+}
+
+
 
 int main(){
     //ex3();
@@ -536,8 +857,14 @@ int main(){
     //C_Ex3();
     //C_Ex4();
     //C_Ex5();
-    C_Ex5_2();
+    //C_Ex5_2();
     //C_Ex6();
+    //C_Ex7();
+    //C_Ex8();
+    //C_Ex9();
+    //C_Ex10();
+    //C_Ex13();
+    C_Ex16();
 
     return 0;
 }
