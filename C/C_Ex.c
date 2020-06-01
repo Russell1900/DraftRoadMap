@@ -832,7 +832,187 @@ int my_strcmp(char* str1, char* str2){
 
 }
 
+typedef struct ptrlist {
+    void* ptr;
+    int size;
+    struct ptrlist* Next;
+} ptrlist;
 
+typedef struct date{
+    int year;
+    int month;
+    int day;
+}Date;
+
+int days(Date dat){
+    int sum = 0;
+    switch(dat.month){
+        case 12:
+            sum += 30;
+        case 11:
+            sum += 31;
+        case 10:
+            sum += 30;
+        case 9:
+            sum += 31;
+        case 8:
+            sum += 31;
+        case 7:
+            sum += 30;
+        case 6:
+            sum += 31;
+        case 5:
+            sum += 30;
+        case 4:
+            sum += 31;
+        case 3:
+            sum += 28;
+            if(dat.year%4==0){
+                sum += 1;
+            }
+        case 2:
+            sum += 31;
+        case 1:
+            break;
+        default:
+            printf("invalid month");
+            return -1;
+            break;
+    }
+    sum += dat.day;
+
+    return sum;
+}
+
+void st_ex1(){
+    Date dat;
+
+    // printf("tpye in year:\n");
+    // scanf("%d", &dat.year);
+    // printf("tpye in month:\n");
+    // scanf("%d", &dat.month);
+    // printf("tpye in day:\n");
+    // scanf("%d", &dat.day);
+
+    dat.year = 2011;
+    dat.month = 2;
+    dat.day = 23;
+
+    printf("This is the %dth day.\n", days(dat));
+}
+
+typedef struct student {
+    int num;
+    char name[10];
+    int score[3];
+    struct student *Next;
+}Student;
+
+void print(Student stu){
+    printf("Student num: %d\nName: %s\nScore1: %d\nScore2: %d\nScore3: %d\n\n", \
+        stu.num, stu.name, stu.score[0], stu.score[1], stu.score[2]);
+}
+
+Student* input(){
+    int len = sizeof(Student);
+    Student* stu = (Student*)malloc(len);
+    printf("Enter student number:\n");
+    scanf("%d", stu->num);
+    if(stu->num!=0)
+    {
+        printf("Enter student name:\n");
+        scanf("%s", stu->name);
+        printf("Enter student score1:\n");
+        scanf("%d", stu->score[0]);
+        printf("Enter student score2:\n");
+        scanf("%d", stu->score[1]);
+        printf("Enter student score3:\n");
+        scanf("%d", stu->score[2]);
+        stu->Next = NULL;
+    }
+
+    return stu;
+}
+
+Student* create(){
+    Student* head = NULL;
+    Student* p1, *p2;
+    p1 = p2 = head;
+    do{
+        p1 = input();
+        if(p1->num!=0){
+            if(head == NULL){
+                head = p1;
+                p1 = p2 = head;
+            }else{
+                p2->Next = p1;
+                p2 = p1;
+            }
+        }
+    }while(p1->num!=0);
+    free(p1);
+}
+
+void insert(Student* stu, Student* new_stu){
+    Student *next_stu = stu->Next;
+    stu->Next = new_stu;
+    new_stu->Next = new_stu;
+}
+
+void del(Student* head, Student* stu){
+    Student* next_stu;
+    while(head->Next!=stu){
+        head = head->Next;
+    }
+    head->Next = stu->Next;
+    free(stu);
+}
+
+void pick(Student* head, Student* stu){
+    Student* next_stu;
+    while(head->Next!=stu){
+        if(head->Next==NULL || head==NULL){
+            printf("not found\n");
+            return -1;
+        }
+        head = head->Next;
+    }
+    head->Next = stu->Next;
+    stu->Next = NULL;
+}
+
+Student* sort(Student* head){
+    Student* new_head = NULL, *p, *p_walk, *new_p;
+    p_walk = p = head;
+    new_p = new_head;
+    while(head->Next!=NULL){
+        while(p_walk!=NULL){
+            if(p_walk->num < p->num){
+                p = p_walk;
+            }
+            p_walk = p_walk->Next;
+        }
+        if(p==NULL){
+            printf("not found\n");
+            return NULL;
+        }else{
+            pick(head, p);
+            if(new_head == NULL){
+                new_p = new_head = p;
+            }else{
+                new_p->Next = p;
+                new_p = new_p->Next;
+            }
+        }
+    }
+    new_p->Next = head;
+    return new_head;
+}
+
+void st_ex3(){
+    Student* st1 = input();
+    print(*st1);
+}
 
 int main(){
     //ex3();
@@ -864,7 +1044,9 @@ int main(){
     //C_Ex9();
     //C_Ex10();
     //C_Ex13();
-    C_Ex16();
-
+    //C_Ex16();
+    //st_ex1();
+    st_ex3();
+    
     return 0;
 }

@@ -50,6 +50,7 @@ git中，当前工作版本是HEAD指针指向的版本。版本回溯就是操�
 ### 删除/恢复文件
 
 * git rm file1：从仓库中移除file1
+* git rm --cache file1：将提交到index的file1撤销
 * git checkout file1：将文件从仓库中复制并替换到工作区。
 
 ### 分支管理
