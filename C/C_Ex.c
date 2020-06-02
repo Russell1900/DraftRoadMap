@@ -1056,7 +1056,16 @@ void File_Ex4(){
 
 
 void File_Ex5(){
-
+    char c;
+    FILE *fp;
+    fp = fopen("File_Ex5.txt", "r");
+    int *i;
+    i = (int*)malloc(4);
+    while(fread(i, 4, 1, fp)==1){
+        printf("%d", *i);
+        printf("noot\n");
+    }
+    printf("done\n");
 }
 
 
@@ -1095,9 +1104,7 @@ int main(){
     //st_ex1();
     //st_ex3();
     //File_Ex3();
-    File_Ex4();
-    
-
-
+    //File_Ex4();
+    File_Ex5();
     return 0;
 }
