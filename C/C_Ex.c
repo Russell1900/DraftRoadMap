@@ -1014,7 +1014,54 @@ void st_ex3(){
     print(*st1);
 }
 
+void File_Ex3(){
+    int diff;
+    char c;
+    FILE *fp;
+    diff = 'A'-'a';
+    if ((fp = fopen("File_Ex3.txt", "w")) == NULL){
+        printf("File not opened.\n");
+        exit(0);
+    }
+    printf("Type in information:\n");
+    do{
+        c = getchar();
+        if (c>='a'&&c<='z'){
+            c += diff;
+        }
+        fputc(c, fp);
+    }while(c!='!');
+    fclose(fp);
+}
+
+void File_Ex4(){
+    char c;
+    FILE *fp1, *fp2;
+    if((fp1=fopen("File_Ex3.txt", "r")) == NULL){
+        printf("File 1 not found.\n");
+        exit(0);
+    }
+    if((fp2=fopen("File_Ex4.txt", "w")) == NULL){
+        printf("File 2 not found.\n");
+        exit(0);
+    }
+    c = fgetc(fp1);
+    while(c!=EOF){
+        fputc(c, fp2);
+        c = fgetc(fp1); 
+    }
+    fclose(fp1);
+    fclose(fp2);
+}
+
+
+void File_Ex5(){
+
+}
+
+
 int main(){
+    char c;
     //ex3();
     //ex4();
     //ex5();
@@ -1046,7 +1093,11 @@ int main(){
     //C_Ex13();
     //C_Ex16();
     //st_ex1();
-    st_ex3();
+    //st_ex3();
+    //File_Ex3();
+    File_Ex4();
     
+
+
     return 0;
 }

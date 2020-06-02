@@ -317,7 +317,9 @@ fread(buffer, size, count, fp): 从fp（二进制打开）中，读取size*count
 
 fwrite(buffer, size, count, fp): 向fp（二进制打开）中，从buffer输入size*count的字计数。
 
-fclose(fp)
+fp = fopen(file, mode):打开文件将文件内容录入缓冲区
+
+fclose(fp):将缓冲区保存至文件，关闭文件，清除缓冲区。
 
 rewind(fp): 将fp的位置标记返回至文件头。
 
@@ -328,6 +330,8 @@ ftell(fp)：返回fp文件位置标记的当前位置。出错时返回-1.
 ferror(fp)：在执行文件操作时，除了执行的语句会返回成功/报错的信息，fp也会储存当前语句的结果信息，ferror用于读取这个信息，0的时候表示无错误。
 
 clearerr(fp)：清楚文件当前错误.
+
+**NOTE:**putchar，getchar都是从std in/out put。putc，getc，fputc，fgetc都是对文件，f表示function，没有f的是以宏实现的。
 
 ## 变量声明
 
