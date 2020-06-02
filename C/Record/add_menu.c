@@ -3,6 +3,7 @@
 #include "info.h"
 #include "common_display.h"
 #include "info.h"
+#include <string.h>
 
 void add_item(void);
 
@@ -12,22 +13,23 @@ void disp_add_menu(void){
     do{
         show_header("ADD ITEM");
         printf("A.Add Items.\n");
-        printf("R.Return.\n");
+        printf("X.Return.\n");
         printf("\nCommand:");
         scanf("%c", &c);
+        getchar(); // this is used to handle the LF char after last input.
         switch(c){
             case 'a':
             case 'A':
                 add_item();
                 break;
-            case 'r':
-            case 'R':
+            case 'x':
+            case 'X':
                 break;
             default:
                 printf("Wrong selection, type again.\n");
                 break;
         }
-    }while(c!='r'&&c!='R');
+    }while(c!='x'&&c!='X');
 
 }
 
@@ -40,9 +42,11 @@ void add_item(void){
     printf("ID: ");
     scanf("%d", &p->id);
     printf("\nName: ");
-    scanf("%s", &p->name);
+    scanf("%s", p->name);
+    getchar(); // this is used to handle the LF char after last input.
     printf("\nGender(M/F): ");
     scanf("%c", &ge);
+    getchar(); // this is used to handle the LF char after last input.
     if(ge=='m'||ge=='M'){
         p->ged = male;
     }else{
@@ -56,10 +60,11 @@ void add_item(void){
     scanf("%d", &p->salary);
     printf("\nAddress: ");
     scanf("%s", p->addr);
-
+    getchar(); // this is used to handle the LF char after last input.
     printf("\nsave?(Y/N):");
     scanf("%c", &c);
-    if(c=='y'||c=='y'){
+    getchar(); // this is used to handle the LF char after last input.
+    if(c=='y'||c=='Y'){
         append(p);
     }else{
         free(p);

@@ -24,9 +24,25 @@ void load_items(void){
                 p_mov = p_mov->Next;
             }
         }
+        fclose(fp);
     }
     header = head;
     tailer = p_mov;
+}
+
+void save_items(void){
+    /* this function is to save items to database, if database is empty or 
+       not found, return NULL, else return head ptr */
+
+    FILE *fp;
+    Person *p;
+    p = header;
+    if((fp=fopen(DB_FILE, "w"))!=NULL){
+        while(p!=NULL){
+            fwrite(p, ITEM_SIZE, 1, fp);
+        }
+        fclose(fp);
+    }
 }
 
 void clearall(){
@@ -42,10 +58,11 @@ void clearall(){
 
 void append(Person* per){
     per->Next = NULL;
-    tailer->Next = per;
-    tailer = tailer->Next;
-}
-
-void show_all(){
-    
+    if(header==NULL){
+        header = per;
+        tailer = per;
+    }else{
+        tailer->Next = per;
+        tailer = tailer->Next;
+    }
 }
