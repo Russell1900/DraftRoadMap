@@ -24,5 +24,5 @@ Person* tailer;
 int total_num;
 
 void load_items(void);
-
+void append(Person* per);
 #endif

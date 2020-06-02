@@ -2,6 +2,7 @@
 #include "common_display.h"
 #include "add_menu.h"
 #include "check_menu.h"
+#include "info.h"
 
 int show_main_menu(void){
     char c;
@@ -30,7 +31,7 @@ int show_main_menu(void){
                 break;
             case 'd':
             case 'D':
-                show_all();
+                show_all_items();
                 break;
             case 'x':
             case 'X':

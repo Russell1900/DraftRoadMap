@@ -29,7 +29,6 @@ void disp_add_menu(void){
         }
     }while(c!='r'&&c!='R');
 
-    return 0;
 }
 
 void add_item(void){
@@ -41,7 +40,7 @@ void add_item(void){
     printf("ID: ");
     scanf("%d", &p->id);
     printf("\nName: ");
-    scanf("%s", p->name);
+    scanf("%s", &p->name);
     printf("\nGender(M/F): ");
     scanf("%c", &ge);
     if(ge=='m'||ge=='M'){
@@ -65,4 +64,5 @@ void add_item(void){
     }else{
         free(p);
     }
+    printf("\n");
 }

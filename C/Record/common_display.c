@@ -2,7 +2,7 @@
 #include "info.h"
 
 void show_header(char* name){
-    printf("------ %s ------", name);
+    printf("------ %s ------\n", name);
 }
 
 void print_item(Person *item){
@@ -18,7 +18,7 @@ void print_item(Person *item){
 }
 
 
-void show_all(){
+void show_all_items(){
     Person *p;
     p = header;
     while(header != NULL){

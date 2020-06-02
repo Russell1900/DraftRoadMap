@@ -2,6 +2,6 @@
 #define COMMON_DISPLAY_H
 
 void show_header(char* name);
-void show_all();
+void show_all_items(void);
 
 #endif
