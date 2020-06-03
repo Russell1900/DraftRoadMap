@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "info.h"
 #include <string.h>
+#include "info.h"
 
 void load_items(void){
     /* this function is to load items from database, if database is empty or 
@@ -45,11 +46,34 @@ void clearall(){
     header = NULL;
 }
 
-void append(Person* per){
+void insert_item(Person* per){
+    Person *p, *tmp;
+    p = header;
+    per->Prev = NULL;
     per->Next = NULL;
-    per->Prev = tailer;
-    tailer->Next = per;
-    tailer = tailer->Next;
+    if(header==NULL){
+        header = per;
+        tailer = header;
+    }else{
+        while(p!=NULL&&p->id<=per->id){
+            p=p->Next;
+        }
+        if(p==NULL){
+            tailer->Next = per;
+            per->Prev = tailer;
+            tailer = tailer->Next;
+        }else if(p==header){
+            per->Next = header;
+            header->Prev = per;
+            header = header->Prev;
+        }else{
+            tmp = p;
+            per->Prev = p->Prev;
+            per->Next = p;
+            p->Prev->Next = per;
+            p->Prev = p;
+        }
+    }
 }
 
 void search_item_id(int id){
@@ -72,7 +96,7 @@ void search_item_name(char* name){
     memset((void*)parr, 0, sizeof(parr));
     p = header;
     while(p!=NULL){
-        if(strcmp(p->name, name)!=0){
+        if(strcmp(p->name, name)==0){
             parr[p_len] = p;
             p_len++;
         }
@@ -88,6 +112,7 @@ void save_items(){
     if((fp = fopen(DB_FILE, "w"))!=NULL){
         while(p!=NULL){
             fwrite(p, ITEM_SIZE, 1, fp);
+            p = p->Next;
         }
         fclose(fp);
     }
@@ -116,6 +141,7 @@ void add_item(void){
     scanf("%d", &p->age);
     printf("\nTelephone: ");
     scanf("%s", p->tel);
+    getchar();
     printf("\nSalary: ");
     scanf("%d", &p->salary);
     printf("\nAddress: ");
@@ -125,13 +151,26 @@ void add_item(void){
     scanf("%c", &c);
     getchar(); // this is used to handle the LF char after last input.
     if(c=='y'||c=='Y'){
-        append(p);
+        insert_item(p);
     }else{
         free(p);
     }
     printf("\n");
 }
 
-void delete_items(Person *p){
-    
+void delete_item(Person *p){
+
+    if(p==header){
+        header = p->Next;
+        header->Prev = NULL;
+        free(p);
+    }else if(p==tailer){
+        tailer = p->Prev;
+        tailer->Next = NULL;
+        free(p);
+    }else{
+        p->Prev->Next = p->Next;
+        p->Next->Prev = p->Prev;
+        free(p);
+    }
 }

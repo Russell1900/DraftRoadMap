@@ -4,6 +4,7 @@
 #include "common_display.h"
 #include "info.h"
 #include <string.h>
+#include "add_menu.h"
 
 void add_item(void);
 

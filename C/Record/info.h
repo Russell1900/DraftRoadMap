@@ -28,5 +28,12 @@ Person *parr[20];
 int p_len;
 
 void load_items(void);
-void append(Person* per);
+void clearall();
+void insert_item(Person* per);
+void search_item_id(int id);
+void search_item_name(char* name);
+void save_items();
+void add_item(void);
+void delete_item(Person *p);
+
 #endif

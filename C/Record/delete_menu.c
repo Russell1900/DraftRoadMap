@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include "info.h"
 #include "common_display.h"
+#include "delete_menu.h"
+
+void disp_del_item_id();
+void disp_del_item_name();
 
 void disp_del_menu(void){
     char c;
@@ -37,7 +41,7 @@ void disp_del_item_id(){
     int id, i, choice=-1;
     Person *p=NULL;
     printf("Type in ID: ");
-    scanf("%d", id);
+    scanf("%d", &id);
     search_item_id(id);
 
     if(p_len == 0){
@@ -51,7 +55,7 @@ void disp_del_item_id(){
             if(parr[i]!=NULL){
                 print_item(parr[i]);
             }else{
-                printf("  \n");
+                printf("Removed.\n");
             }
             
         }
@@ -60,6 +64,7 @@ void disp_del_item_id(){
         scanf("%d", &choice);
         if(choice!=0){
             delete_item(parr[choice-1]);
+            parr[choice-1] = NULL;
         }
 
     }while(choice!=0);
@@ -95,6 +100,7 @@ void disp_del_item_name(){
         scanf("%d", &choice);
         if(choice!=0){
             delete_item(parr[choice-1]);
+            parr[choice-1] = NULL;
         }
 
     }while(choice!=0);

@@ -1,15 +1,17 @@
 #include <stdio.h>
-#include <info.h>
+#include "info.h"
+#include "check_menu.h"
+#include "common_display.h"
 
-void disp_search_item_name();
 void disp_search_item_id();
+void disp_search_item_name();
 
 void disp_check_menu(void){
     
     char c;
 
     do{
-        show_header("DELETE ITEM");
+        show_header("CHECK ITEM");
         printf("A.Search by ID.\n");
         printf("B.Search by Name.\n");
         printf("X.Return.\n");
@@ -39,11 +41,10 @@ void disp_search_item_id(){
     int id, i;
     Person *p=NULL;
     printf("Type in ID: ");
-    scanf("%d", id);
+    scanf("%d", &id);
     search_item_id(id);
-
     if(p_len == 0){
-        printf("\nNot found.");
+        printf("\nNot found.\n");
     }else{
         for(i=0;i<p_len;i++){
             print_item(parr[i]);
@@ -55,7 +56,7 @@ void disp_search_item_name(){
     char name[20];
     Person **p=NULL;
     int i;
-    printf("Type in ID: ");
+    printf("Type in Name: ");
     scanf("%s", &name);
     getchar();
     search_item_name(name);
@@ -68,5 +69,3 @@ void disp_search_item_name(){
         }
     }
 }
-
-void 

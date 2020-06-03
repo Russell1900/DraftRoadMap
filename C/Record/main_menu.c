@@ -2,6 +2,7 @@
 #include "common_display.h"
 #include "add_menu.h"
 #include "check_menu.h"
+#include "delete_menu.h"
 #include "info.h"
 
 int show_main_menu(void){
@@ -23,8 +24,7 @@ int show_main_menu(void){
         switch(c){
             case 'a':
             case 'A':
-                //disp_check_menu();
-                printf("disp_check_menu\n");
+                disp_check_menu();
                 break;
             case 'b':
             case 'B':

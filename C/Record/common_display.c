@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "info.h"
+#include "common_display.h"
 
 void show_header(char* name){
     printf("------ %s ------\n", name);
