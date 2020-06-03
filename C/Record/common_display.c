@@ -6,8 +6,10 @@ void show_header(char* name){
 }
 
 void print_item(Person *item){
-    show_header("ITEM");
 
+    if(item==NULL){
+        return;
+    }
     printf("ID: %d\n", item->id);
     printf("NAME: %s\n", item->name);
     printf("GENDER: %s\n", item->ged==male?"Male":"FEMALE");

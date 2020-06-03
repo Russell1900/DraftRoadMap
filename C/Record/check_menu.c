@@ -36,18 +36,17 @@ void disp_check_menu(void){
 }
 
 void disp_search_item_id(){
-    int id;
-    Person **p=NULL;
+    int id, i;
+    Person *p=NULL;
     printf("Type in ID: ");
     scanf("%d", id);
-    p = search_item_id(id);
+    search_item_id(id);
 
-    if(p==NULL){
+    if(p_len == 0){
         printf("\nNot found.");
     }else{
-        while(*p!=NULL){
-            print_item(*p);
-            p++;
+        for(i=0;i<p_len;i++){
+            print_item(parr[i]);
         }
     }
 }
@@ -55,18 +54,19 @@ void disp_search_item_id(){
 void disp_search_item_name(){
     char name[20];
     Person **p=NULL;
+    int i;
     printf("Type in ID: ");
     scanf("%s", &name);
     getchar();
-    p = search_item_name(name);
+    search_item_name(name);
 
-    if(p==NULL){
+    if(p_len == 0){
         printf("\nNot found.");
     }else{
-        while(*p!=NULL){
-            print_item(*p);
-            p++;
+        for(i=0;i<p_len;i++){
+            print_item(parr[i]);
         }
     }
-
 }
+
+void 

@@ -17,11 +17,15 @@ typedef struct person{
     int salary;
     char addr[50];
     struct person *Next;
+    struct person *Prev;
 }Person;
 
 Person* header;
 Person* tailer;
 int total_num;
+
+Person *parr[20];
+int p_len;
 
 void load_items(void);
 void append(Person* per);
