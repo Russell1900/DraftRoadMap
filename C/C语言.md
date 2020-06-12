@@ -341,5 +341,112 @@ clearerr(fp)：清楚文件当前错误.
 int* (*(*p)[])(void) // p是指针，*p是数组，数组的元素是指针，指向函数，函数的形参是void，返回值是int*
 ```
 
+## 多线程 pthread
 
+### 基本
+
+```c
+int pthread_create (pthread_t* __restrict __newthread, // 返回的线程指针，用来辨识线程id
+                    const pthread_attr_t *__restrict __attr, // 线程属性
+                    void *(*__start_routine) （void*), // 调用的函数 要为void * f（void*）型
+					void *__restrict __arg); // 传给函数的参数，要转化为 void*
+//创建成功后返回0，否则失败
+
+void pthread_join(pthread_t pId, // 挂起当前线程，等待pId线程结束
+                  void** status); // 
+
+// 线程的attrubute
+pthread_att_t*， 创建时可写NULL， 表明线程调度策略，栈堆，join detach等信息;
+pthread_attr_init: 创建pthread_att_t;
+pthread_attr_destroy: 销毁pthread_att_t;
+
+/* 结束
+1. 线程调用函数return时，线程结束。
+2. void pthread_exit(void *retval), 退出当前线程.retval使用户指定的线程结束后返回的参数。
+3. int pthread_cancel(pthread_t pId)：结束pId线程。成功返回0.
+4. 进程调用exec()或exit()退出时，子线程也会结束。
+5. main()函数结束时，如果main没有调用pthread_exit结束，所有线程也会结束。
+
+僵尸线程：如果一个线程为joinable的话，线程退出后会保留自己的pId、退出信息等，直到有人join该线程才会释放。此时若没有线程去join它，则该线程变为僵尸线程。
+设置成detachable状态则会不保留。方法
+1. 开始时设置属性为detachable
+2. pthread_detach()
+
+*/
+int pthread_join(pthread_t pId, void **value_ptr); //阻塞当前线程，知道pId返回。 一般的，一个可以被阻塞的线程只能被一个线程join，多个线程join一个线程，结果未知。自己不能join自己。
+/*一般线程被创建是默认是joinable的，建议显式的创建joinable属性。
+
+*/
+
+pthread_detach(pId); // 设置pId为detachable
+pthread_attr_setdetachstate(&attr, detachstate); // 设置pId为detachable
+pthread_attr_getdetachstate(&attr, detachstate); // 查询pId的detachable属性
+
+// 实例
+pthread_t pId; // 声明线程id
+pthread_attr_t attr; // 声明线程属性
+pthread_attr_init(&attr); // 初始化属性，如分配栈堆地址和空间等。
+pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE); //设置属性joinable
+pthread_create(&pId, &attr, func, param); // 创建线程
+pthread_attr_destroy(&attr); // 销毁属性，在创建完线程后就可以销毁。
+
+/* 线程的栈堆管理：手动设置线程栈堆的大小可以有助于代码移植
+
+*/
+pthread_attr_setstacksize(&attr, stacksize);
+pthread_attr_getstacksize(&attr, &stacksize);
+
+pthread_attr_setstackaddr(&attr, stackaddr);
+pthread_attr_getstackaddr(&attr, &stackaddr);
+
+//detach  ????
+
+
+
+
+// 其他
+pthread_t pthreadself(); // 返回当前线程id
+int pthread_equal(pId1, pId2); //比较两个线程id，不同返回0，相同返回非0
+```
+
+### Mutex 互斥锁
+
+当多个线程同时操作一个地址或其他操作时，有些情况下会造成混乱，所以需要创建mutex并在程序中相应的位置申请/释放mutex，老保证通过是只有一段代码在执行。
+
+```c++
+pthread_mutex_t mutex;
+pthread_mutex_init(pthread_mutex_t *mutex, pthread_mutex_attr_t *attr);//初始化mutex
+mutex = PTHREAD_MUTEX_INITIALIZER; //另一种初始化方法
+pthread_mutex_destroy(pthread_mutex_t *mutex);//销毁mutex
+pthread_mutex_init(pthread_mutex_attr_t *attr);//初始化mutex attr
+pthread_mutex_destroy(pthread_mutex_attr_t *attr);//初始化mutex attr
+pthread_mutex_lock（pthread_mutex_t *mutexId); //申请mutexId, 如果当前锁没有释放，则线程阻塞，等待锁释放，若有多个线程同时等待，则在解锁后相互竞争。
+pthread_mutex_trylock(pthread_mutex_t *mutexId); //尝试申请所，若失败则返回错误???
+pthread_mutex_unlock(pthread_mutex_t *mutexId); //释放锁
+```
+
+### 条件变量
+
+条件变量允许线程等待其他线程信号，然后开始尝试唤醒锁进行操作。
+
+```C++
+// 初始化条件锁
+pthread_cond_t myConvar = PTHREAD_COND_INITIALIZER; //or
+pthread_cond_t myConvar;
+pthread_cond_init(&myConvar, &attr);
+
+// wait
+pthread_cond_wait(&condition, &mutex); // 调用时，需要确保mutex在锁定状态，通常需要在当前线程的上文锁定mutex，然后调用次函数。调用后，当前线程进入阻塞状态，并释放mutex，并开始等待condition信号。在收到condition信号后，对mutex进行监视，当mutex解锁后，锁定mutex继续当前线程。
+
+// 发送信号cond，来激活被当前锁阻塞的cond_wait。
+pthread_cond_signal(&cond);
+
+//向所有被cond阻塞的锁发送信号
+pthread_broadcast(&cond);
+
+//销毁cond
+pthread_cond_destroy(&cond);
+```
+
+问题：pthread_cond_wait和pthread_mutex_lock, 如果有多个线程通过这两个函数在争夺同一个mutex, mutex的申请顺序。
 
