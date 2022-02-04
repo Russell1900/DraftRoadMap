@@ -1,5 +1,7 @@
 # PANDAS
 
+https://www.runoob.com/pandas/pandas-tutorial.html
+
 ## Series
 
 ```python
@@ -58,6 +60,7 @@ print(df)
 print('---访问列---')
 print(df['x']) # 必须使用当前列id，不支持默认的01234，除非没有设置列id
 print(df['x'][0])
+df[['x','y']] # 访问x、y两列
 print(df[0:2]) # 列切片，返回所有列的前两个元素（相当于0，1两行），切片只能使用数字id
 print('---访问行---') # df.loc[index, colowns]
 print(df.loc['a'])  # 必须使用当前行id，不支持默认的01234，除非没有设置行id
@@ -68,6 +71,13 @@ print('使用数字idx')
 print(df)
 print(df.iloc[1,2])
 print(df.iloc[0:2,1:3]) # 切片
+
+# 筛选
+# https://www.gairuo.com/p/pandas-selecting-data
+df[df.col_name == xxx]
+
+# https://pandas.pydata.org/docs/reference/api/pandas.merge.html
+pandas.merge(left, right, how='inner', on=None, left_on=None, right_on=None, left_index=False, right_index=False, sort=False, suffixes=('_x', '_y'), copy=True, indicator=False, validate=None)
 ```
 
 ## 与CSV交互
@@ -153,3 +163,4 @@ print(df)
 ## 清洗数据
 
 https://www.runoob.com/pandas/pandas-cleaning.html
+
