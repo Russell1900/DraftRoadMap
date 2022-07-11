@@ -1,0 +1,6 @@
+#cmakedefine SayHi // normal variables?
+#cmakedefine HAVE_EXP
+#define VER @VER@
+#define HelloWorld_VERSION_MAJOR @HelloWorld_VERSION_MAJOR@ // cmake variables
+#define HelloWorld_VERSION_MINOR @HelloWorld_VERSION_MINOR@
+#define CXX_STD @CMAKE_CXX_STANDARD@
